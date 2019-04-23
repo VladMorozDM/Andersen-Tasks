@@ -5,9 +5,27 @@ input[name="redact"]{
 }
 
 form{
-    width: 200px;
+    min-width: 200px;
+    max-width: 400px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+}
+
+#addItem{
+    display: flex;
+    flex-direction:column;
+    align-items: flex-start;
+}
+#addItem div{
+    width: 250px;
+
+
+}
+.delete{
+    background-color: red;
+}
+h6{
+    margin: 10px 0;
 }
