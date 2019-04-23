@@ -7,11 +7,7 @@ const monthNames = ["January", "February", "March", "April", "May", "June",
 ];
 
 const itemsToParse  = [
-    {
-        date:  '2019-04-23T03:24:00' ,
-        text: 'a',
-        id: 1
-    },
+
     {
         date:  '2010-04-23T03:24:00' ,
         text: 'b',
@@ -21,6 +17,11 @@ const itemsToParse  = [
         date:  '2019-02-23T03:24:00' ,
         text: 'c',
         id: 3
+    },
+    {
+        date:  '2009-04-23T03:24:00' ,
+        text: 'a',
+        id: 1
     },
     {
         date: '2019-05-23T03:24:00' ,
@@ -57,9 +58,9 @@ class Commander{
                             <input type="text">
                             <input type="button" onclick="addItems()" value="add Task">
                         </div>
-                        <select name="language" size="2">
-                            <option value="byTime"="selected">Sort By Time</option>
-                            <option value="byText">Sort By Text</option>
+                        <select name="typeOfSorting" onchange="changeSorting()" size="2">
+                            <option value="byTime" >Sort By Time</option>
+                            <option value="byText" selected="selected">Sort By Text</option>
                         </select>
                     </form>
                     
@@ -84,9 +85,8 @@ class Commander{
                 const sortedList = this.toDoItems.sort(function(a,b){
                     const c = new Date(a.date);
                     const d = new Date(b.date);
-                    return c-d;
+                    return d-c;
                 });
-                console.log(sortedList);
                 this.render(sortedList);
                 break;
             case "byText":
@@ -154,12 +154,17 @@ function addItems(event){
     const value = new Item({date: new Date(),text: form.elements[0].value});
     firstComm.add(value);
 }
+function changeSorting(event){
+    const form = document.getElementById("addItem");
+    const sortingSelect = form.typeOfSorting;
+    firstComm.sortItems(sortingSelect.options[sortingSelect.selectedIndex].value);
+
+}
 
 const taskList = itemsToParse.map( item => new Item(item));
 const firstComm = new Commander(parent, taskList);
 firstComm.onInit();
 
 
-firstComm.sortItems("byTime");
 
 
