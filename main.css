@@ -1,0 +1,13 @@
+input[name="cancel"],
+input[name="submit"],
+input[name="redact"]{
+    display: none;
+}
+
+form{
+    width: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
