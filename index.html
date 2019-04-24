@@ -15,18 +15,13 @@
             <input type="button" onclick="UsefulMethods.addItems()" value="add Task">
         </div>
         <input type="text" oninput="UsefulMethods.filterByText()" name="filterSample" placeholder="Filter result">
-        <div>
-            <select name="periodOf" onchange="UsefulMethods.changeSorting()" size="4">
-                <option value="1" >Last day</option>
-                <option value="1" >Last week</option>
-                <option value="" >Last month</option>
-                <option value="" >Last year</option>
-            </select>
+
+
             <select name="typeOfSorting" onchange="UsefulMethods.changeSorting()" size="2">
                 <option value="byTime" >Latest</option>
                 <option value="byText" >Sort in Alphabet order</option>
             </select>
-        </div>
+
     </form>
 </div>
 

@@ -29,7 +29,7 @@ const itemsToParse = [
     {
         date: '2019-02-23T03:24:00',
         text: 'd',
-        done: false,
+        done: true,
         id: 4
     }
 ];
@@ -152,17 +152,18 @@ class Controller {
 
 
 class Item {
-    constructor({date = '', text = '', id, }) {
+    constructor({date = '', text = '', id, done = 'false'}) {
         this.date = date;
         this.text = text;
         this.id = id;
+        this.done = done;
     }
 
     getTemplate() {
         const date = new Date(this.date);
         return `<h6> ${monthNames[date.getMonth()]} ${ date.getDate()}  </h6>
             <form action="">
-                <input type="checkbox">
+                <input type="checkbox" name="progress" data-id=${this.id} ${this.done ? "checked" : ""}>
                 <p>${this.text}</p>                    
                 <input class="delete" type="button" data-id="${this.id}" value="delete">
                 <input type="text" name="redact">
@@ -174,6 +175,10 @@ class Item {
         if (Number.parseInt(event.target.getAttribute("data-id")) === parseInt(this.id)) {
             if (event.target.classList.contains("delete")) {
                 controller.remove(this.id);
+            }else if(event.target.name === "progress"){
+                console.log('mm', this.done);
+                this.done = !this.done;
+
             }
         }
     }
