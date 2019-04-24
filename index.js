@@ -171,9 +171,7 @@ class Item {
             <form action="">
                 <input type="checkbox" name="progress" data-id=${this.id} ${this.done ? "checked" : ""}>
                 <p>${this.text}</p>                    
-                <input class="delete" type="button" data-id="${this.id}" value="delete">
-                <input type="text" name="redact">
-                <input type="button" name = "submit"><input type="button" name = "cancel">
+                <input class="delete btn btn-danger" type="button" data-id="${this.id}" value="delete">
              </form>`;
     }
 
@@ -194,4 +192,5 @@ const taskList = itemsToParse.map(item => new Item(item));
 const firstView = new View(parent, taskList);
 const firstComm = new Controller(firstView);
 firstComm.onInit();
+console.log(document.querySelector(".addItem"))
 

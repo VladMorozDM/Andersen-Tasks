@@ -1,25 +1,52 @@
-input[name="cancel"],
-input[name="submit"],
-input[name="redact"]{
-    display: none;
+*{
+    font-family: 'Roboto', sans-serif;
+}
+.body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.root{
+    margin-bottom: 20px;
+}
+
+.root > div{
+    border-bottom: 1px solid grey;
+    padding-bottom: 5px;
 }
 
 form{
-    min-width: 200px;
-    max-width: 400px;
+    width: 300px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 }
 
-#addItem{
+.addItem{
+    width: 300px;
+    height: 150px;
     display: flex;
     flex-direction:column;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-around;
 }
-#addItem div{
-    width: 250px;
+.addItem div:nth-child(2n){
+    width: 300px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.addItem div:first-child{
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+}
+.addItem div:first-child input{
+
+    display: inline-block;
+
 }
 
 .warning{
@@ -27,8 +54,9 @@ form{
 }
 
 .delete{
-    background-color: red;
+
 }
 h6{
     margin: 10px 0;
 }
+
