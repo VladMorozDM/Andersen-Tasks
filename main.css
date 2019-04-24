@@ -20,9 +20,12 @@ form{
 }
 #addItem div{
     width: 250px;
-
-
 }
+
+.warning{
+    border: 2px solid red;
+}
+
 .delete{
     background-color: red;
 }
