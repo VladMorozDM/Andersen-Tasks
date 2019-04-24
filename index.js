@@ -51,7 +51,7 @@ class UsefulMethods {
         if(form.elements[0].value === '') form.elements[0].classList.add("warning");
         else {
             form.elements[0].classList.remove("warning");
-            const value = new Item({date: new Date(), text: form.elements[0].value});
+            const value = new Item({date: new Date(), text: form.elements[0].value, done: false});
             form.elements[0].value = '';
             firstComm.add(value);
         }
@@ -110,8 +110,14 @@ class Controller {
     }
     add(item) {
         const toDoItems = this.view.toDoItems;
-        if (!item.id && toDoItems.length) { item.id = toDoItems[toDoItems.length - 1].id + 1  }
-        else if( !item.id && !toDoItems ) { item.id = 0 }
+        if (!item.id && toDoItems.length) {
+            console.log("added");
+            item.id = toDoItems[toDoItems.length - 1].id + 1
+        }
+        else if( !item.id && !toDoItems.length ) {
+            item.id = 0;
+            console.log("newest")
+        }
         this.view.toDoItems.push(item);
         this.filteredList = [];
         this.view.render()
@@ -122,7 +128,7 @@ class Controller {
                                     : this.view.filteredList;
         this.view.toDoItems = this.view.toDoItems.filter(item => item.id !== itemId);
         this.view.render();
-    }
+    };
     sortItems(criteria) {
         switch (criteria) {
             case "byTime":
@@ -152,7 +158,7 @@ class Controller {
 
 
 class Item {
-    constructor({date = '', text = '', id, done = 'false'}) {
+    constructor({date = '', text = '', id, done = false}) {
         this.date = date;
         this.text = text;
         this.id = id;
@@ -176,7 +182,6 @@ class Item {
             if (event.target.classList.contains("delete")) {
                 controller.remove(this.id);
             }else if(event.target.name === "progress"){
-                console.log('mm', this.done);
                 this.done = !this.done;
 
             }
