@@ -1,7 +1,7 @@
 /**
  * Created by vlad on 23.04.2019.
  */
-const parent = document.getElementById("root");
+
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
@@ -32,9 +32,6 @@ const itemsToParse = [
 
 
 class UsefulMethods {
-    constructor() {
-    }
-
     static sortingByTime(a, b) {
         const c = new Date(a.date);
         const d = new Date(b.date);
@@ -66,14 +63,32 @@ class UsefulMethods {
     }
 }
 
-class Commander {
-    constructor(root, toDoItems = []) {
-        this.toDoItems = toDoItems;
+class View {
+    constructor(root){
         this.root = root;
     }
-    onInit() {
-        this.render(this.toDoItems);
-        this.root.addEventListener("click", e => {
+    render(Items) {
+        this.root.innerHTML = '';
+        Items.forEach(item => {
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = item.getTemplate();
+            this.root.prepend(wrapper);
+        });
+
+    }
+}
+
+class Controller {
+    constructor(toDoItems = []) {
+        this.toDoItems = toDoItems;
+        this.root = root;
+        this.view = {};
+        this.filteredList = [];
+    }
+    onInit(viewObject) {
+        this.view = viewObject;
+        this.view.render(this.toDoItems);
+        this.view.root.addEventListener("click", e => {
             this.toDoItems.forEach(item => {
                 item.handleClick(this, e)
             })
@@ -83,38 +98,28 @@ class Commander {
         const toDoItems = this.toDoItems;
         if (!item.id) (item.id = toDoItems[toDoItems.length - 1].id + 1);
         this.toDoItems.push(item);
-        this.render(this.toDoItems)
+        this.view.render(this.toDoItems)
     };
     remove(itemId) {
         this.toDoItems = this.toDoItems.filter(item => item.id !== itemId);
-        this.render(this.toDoItems);
+        this.view.render(this.toDoItems);
     }
     sortItems(criteria) {
         console.log(criteria);
         switch (criteria) {
             case "byTime":
                 const sortedByNewest = this.toDoItems.sort(UsefulMethods.sortingByTime);
-                this.render(sortedByNewest);
+                this.view.render(sortedByNewest);
                 break;
             case "byText":
                 const sortedByAlphabet = this.toDoItems.sort(UsefulMethods.sortingByText);
-                this.render(sortedByAlphabet);
+                this.view.render(sortedByAlphabet);
                 break;
         }
     };
     filterItems(sample) {
-        const filteredList = this.toDoItems.filter(item => item.text.includes(sample));
-        this.render(filteredList)
-    }
-    render(Items) {
-        this.root.innerHTML = '';
-
-        Items.forEach(item => {
-            const wrapper = document.createElement("div");
-            wrapper.innerHTML = item.getTemplate();
-            this.root.prepend(wrapper);
-        });
-
+        this.filteredList = this.toDoItems.filter(item => item.text.toLowerCase().includes(sample.toLowerCase()));
+        this.view.render(this.filteredList)
     }
 }
 
@@ -148,8 +153,9 @@ class Item {
     }
 }
 
-
+const parent = document.getElementById("root");
 const taskList = itemsToParse.map(item => new Item(item));
-const firstComm = new Commander(parent, taskList);
-firstComm.onInit();
+const firstView = new View(parent);
+const firstComm = new Controller(taskList);
+firstComm.onInit(firstView);
 
