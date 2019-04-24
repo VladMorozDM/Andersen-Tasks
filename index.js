@@ -57,6 +57,9 @@ class UsefulMethods {
     }
 
     static filterByText() {
+
+       // console.log('1');
+
         const form = document.getElementById("addItem");
         const filterSample = form.filterSample.value;
         firstComm.filterItems(filterSample)
@@ -64,63 +67,82 @@ class UsefulMethods {
 }
 
 class View {
-    constructor(root){
+    constructor(root, toDoItems){
+        this.toDoItems = toDoItems;
         this.root = root;
+        this.filteredList = [];
     }
-    render(Items) {
+    render() {
         this.root.innerHTML = '';
-        Items.forEach(item => {
-            const wrapper = document.createElement("div");
-            wrapper.innerHTML = item.getTemplate();
-            this.root.prepend(wrapper);
-        });
+        if (this.filteredList.length){
+                this.filteredList.forEach(item => {
+                    const wrapper = document.createElement("div");
+                    wrapper.innerHTML = item.getTemplate();
+                    this.root.prepend(wrapper);
+                })
+        }else {
+            this.toDoItems.forEach(item => {
+                const wrapper = document.createElement("div");
+                wrapper.innerHTML = item.getTemplate();
+                this.root.prepend(wrapper);
+            });
+        }
 
     }
 }
 
 class Controller {
-    constructor(toDoItems = []) {
-        this.toDoItems = toDoItems;
+    constructor(viewObject) {
         this.root = root;
-        this.view = {};
-        this.filteredList = [];
-    }
-    onInit(viewObject) {
         this.view = viewObject;
-        this.view.render(this.toDoItems);
+    }
+    onInit() {
+        this.view.render();
         this.view.root.addEventListener("click", e => {
-            this.toDoItems.forEach(item => {
+            this.view.toDoItems.forEach(item => {
                 item.handleClick(this, e)
             })
         });
     }
     add(item) {
-        const toDoItems = this.toDoItems;
+        const toDoItems = this.view.toDoItems;
         if (!item.id) (item.id = toDoItems[toDoItems.length - 1].id + 1);
-        this.toDoItems.push(item);
-        this.view.render(this.toDoItems)
+        this.view.toDoItems.push(item);
+        this.filteredList = [];
+        this.view.render()
     };
     remove(itemId) {
-        this.toDoItems = this.toDoItems.filter(item => item.id !== itemId);
-        this.view.render(this.toDoItems);
+        this.view.filteredList = this.view.filteredList.length
+                                    ? this.view.filteredList.filter(item => item.id !== itemId)
+                                    : this.view.filteredList;
+        this.view.toDoItems = this.view.toDoItems.filter(item => item.id !== itemId);
+        this.view.render();
     }
     sortItems(criteria) {
-        console.log(criteria);
         switch (criteria) {
             case "byTime":
-                const sortedByNewest = this.toDoItems.sort(UsefulMethods.sortingByTime);
-                this.view.render(sortedByNewest);
+                const sortedByNewest = this.view.filteredList.length
+                    ?  this.view.toDoItems.sort(UsefulMethods.sortingByTime)
+                    :  this.view.filteredList.sort(UsefulMethods.sortingByTime);
+                this.view.render();
                 break;
             case "byText":
-                const sortedByAlphabet = this.toDoItems.sort(UsefulMethods.sortingByText);
-                this.view.render(sortedByAlphabet);
+                const sortedByAlphabet =  this.view.filteredList.length
+                    ? this.view.filteredList.sort(UsefulMethods.sortingByText)
+                    : this.view.toDoItems.sort(UsefulMethods.sortingByText)
+                this.view.render();
                 break;
         }
     };
     filterItems(sample) {
-        this.filteredList = this.toDoItems.filter(item => item.text.toLowerCase().includes(sample.toLowerCase()));
-        this.view.render(this.filteredList)
+        if(sample==='') this.view.filteredList = [];
+        else{
+            this.view.filteredList = this.view.toDoItems
+                                .filter(item => item.text.toLowerCase().includes(sample.toLowerCase()));
+        }
+        this.view.render()
     }
+
 }
 
 
@@ -155,7 +177,7 @@ class Item {
 
 const parent = document.getElementById("root");
 const taskList = itemsToParse.map(item => new Item(item));
-const firstView = new View(parent);
-const firstComm = new Controller(taskList);
-firstComm.onInit(firstView);
+const firstView = new View(parent, taskList);
+const firstComm = new Controller(firstView);
+firstComm.onInit();
 
