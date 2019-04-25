@@ -1,38 +1,45 @@
 /**
  * Created by vlad on 23.04.2019.
  */
+let itemsToParse;
+// const localStorage = window.localStorage;
+// localStorage.clear();
+if(!localStorage.getItem("items")) {
+    itemsToParse = [
+
+        {
+            date: '2019-03-03T03:24:00',
+            text: 'b',
+            done: false,
+            id: 2
+        },
+        {
+            date: '2019-04-23T03:24:00',
+            text: 'c',
+            done: false,
+            id: 3
+        },
+        {
+            date: '2019-01-23T03:24:00',
+            text: 'a',
+            done: true,
+            id: 1
+        },
+        {
+            date: '2019-02-23T03:24:00',
+            text: 'd',
+            done: true,
+            id: 4
+        }
+    ];
+} else{
+    itemsToParse = JSON.parse(localStorage.getItem("items"));
+}
 
 const monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
 ];
 
-const itemsToParse = [
-
-    {
-        date: '2019-03-03T03:24:00',
-        text: 'b',
-        done: false,
-        id: 2
-    },
-    {
-        date: '2019-04-23T03:24:00',
-        text: 'c',
-        done: false,
-        id: 3
-    },
-    {
-        date: '2019-01-23T03:24:00',
-        text: 'a',
-        done: true,
-        id: 1
-    },
-    {
-        date: '2019-02-23T03:24:00',
-        text: 'd',
-        done: true,
-        id: 4
-    }
-];
 
 
 class UsefulMethods {
@@ -119,6 +126,7 @@ class Controller {
             item.id = 0;
         }
         this.view.toDoItems.push(item);
+        localStorage.setItem("items", JSON.stringify(this.view.toDoItems));
         this.filteredList = [];
         this.render()
     };
@@ -127,6 +135,7 @@ class Controller {
                                     ? this.view.filteredList.filter(item => item.id !== itemId)
                                     : this.view.filteredList;
         this.view.toDoItems = this.view.toDoItems.filter(item => item.id !== itemId);
+        localStorage.setItem("items", JSON.stringify(this.view.toDoItems));
         this.render();
     };
     sortItems(criteria) {
@@ -148,8 +157,8 @@ class Controller {
     filterItems(sample) {
         if(sample==='') this.view.filteredList = [];
         else{
-            this.view.filteredList = this.view.toDoItems
-                .filter(item => item.text.toLowerCase().includes(sample.toLowerCase()));
+            this.view.filteredList = this.view.toDoItems.
+                filter(item => item.text.toLowerCase().includes(sample.toLowerCase()));
         }
         this.render()
     }
@@ -195,6 +204,7 @@ const parent = document.getElementById("root");
 const taskList = itemsToParse.map(item => new Item(item));
 const firstView = new View(parent, taskList);
 const firstComm = new Controller(firstView);
+
 firstComm.onInit();
 
 
