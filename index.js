@@ -23,7 +23,7 @@ const itemsToParse = [
     {
         date: '2019-01-23T03:24:00',
         text: 'a',
-        done: false,
+        done: true,
         id: 1
     },
     {
@@ -103,7 +103,7 @@ class Controller {
         this.view = viewObject;
     }
     onInit() {
-        this.view.render();
+        this.render();
         this.view.root.addEventListener("click", e => {
             this.view.toDoItems.forEach(item => {
                 item.handleClick(this, e)
@@ -120,14 +120,14 @@ class Controller {
         }
         this.view.toDoItems.push(item);
         this.filteredList = [];
-        this.view.render()
+        this.render()
     };
     remove(itemId) {
         this.view.filteredList = this.view.filteredList.length
                                     ? this.view.filteredList.filter(item => item.id !== itemId)
                                     : this.view.filteredList;
         this.view.toDoItems = this.view.toDoItems.filter(item => item.id !== itemId);
-        this.view.render();
+        this.render();
     };
     sortItems(criteria) {
         switch (criteria) {
@@ -135,13 +135,13 @@ class Controller {
                 this.view.filteredList.length
                     ?  this.view.filteredList.sort(UsefulMethods.sortingByTime)
                     :  this.view.toDoItems.sort(UsefulMethods.sortingByTime);
-                this.view.render();
+                this.render();
                 break;
             case "byText":
                   this.view.filteredList.length
                     ? this.view.filteredList.sort(UsefulMethods.sortingByText)
                     : this.view.toDoItems.sort(UsefulMethods.sortingByText);
-                this.view.render();
+                this.render();
                 break;
         }
     };
@@ -151,7 +151,10 @@ class Controller {
             this.view.filteredList = this.view.toDoItems
                 .filter(item => item.text.toLowerCase().includes(sample.toLowerCase()));
         }
-        this.view.render()
+        this.render()
+    }
+    render(){
+        this.view.render();
     }
 
 }
@@ -170,6 +173,7 @@ class Item {
         return `<h6> ${monthNames[date.getMonth()]} ${ date.getDate()}  </h6>
             <form action="">
                 <input type="checkbox" name="progress" data-id=${this.id} ${this.done ? "checked" : ""}>
+                <label for="progress" >${this.done ? "Done" : "In progress" }</label>
                 <p>${this.text}</p>                    
                 <input class="delete btn btn-danger" type="button" data-id="${this.id}" value="delete">
              </form>`;
@@ -181,7 +185,7 @@ class Item {
                 controller.remove(this.id);
             }else if(event.target.name === "progress"){
                 this.done = !this.done;
-
+                controller.render()
             }
         }
     }
