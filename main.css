@@ -25,7 +25,18 @@ form{
 label {
     font-size: 1rem;
 }
+.select{
+    position: relative;
+}
+.select select{
+    position: relative;
 
+    display: none;
+}
+.select:hover select{
+    top: 5%;
+    display: block;
+}
 .addItem{
     width: 300px;
     height: 150px;
@@ -35,11 +46,12 @@ label {
     justify-content: space-around;
 }
 .addItem div:nth-child(2n){
+    margin-top: 10px;
     width: 300px;
-    height: 100px;
+    min-height: 100px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: flex-start;
 }
 .addItem div:first-child{
     width: 300px;

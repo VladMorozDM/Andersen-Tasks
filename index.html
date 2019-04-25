@@ -19,10 +19,14 @@
             </div>
             <div>
                 <input type="text" oninput="UsefulMethods.filterByText()" name="filterSample" placeholder="Filter result">
-                <select name="typeOfSorting" onchange="UsefulMethods.changeSorting()" size="2">
-                    <option value="byTime" >Latest</option>
-                    <option value="byText" >Sort in Alphabet order</option>
-                </select>
+                <div class="select">
+                    <input type="button" value="sort">
+                    <select name="typeOfSorting" value="byTime" onchange="UsefulMethods.changeSorting()" size="2">
+                        <option value="byTime" >Latest</option>
+                        <option value="byText" >Sort in Alphabet order</option>
+                    </select>
+                </div>
+
             </div>
         </form>
     </div>
