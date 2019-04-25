@@ -42,13 +42,15 @@ class UsefulMethods {
         return c - d;
     };
     static sortingByText(a, b) {
-        if (a.text < b.text) { return 1; }
-        if (a.text > b.text) { return -1; }
+        if (a.text.toLowerCase() < b.text.toLowerCase())  return 1;
+        if (a.text.toLowerCase() > b.text.toLowerCase())  return -1;
         return 0;
     }
     static addItems() {
         const form = document.getElementById("addItem");
-        if(form.elements[0].value === '') form.elements[0].classList.add("warning");
+        if(form.elements[0].value === '') {
+            form.elements[0].classList.add("warning");
+        }
         else {
             form.elements[0].classList.remove("warning");
             const value = new Item({date: new Date(), text: form.elements[0].value, done: false});
@@ -111,12 +113,10 @@ class Controller {
     add(item) {
         const toDoItems = this.view.toDoItems;
         if (!item.id && toDoItems.length) {
-            console.log("added");
             item.id = toDoItems[toDoItems.length - 1].id + 1
         }
         else if( !item.id && !toDoItems.length ) {
             item.id = 0;
-            console.log("newest")
         }
         this.view.toDoItems.push(item);
         this.filteredList = [];
@@ -192,5 +192,5 @@ const taskList = itemsToParse.map(item => new Item(item));
 const firstView = new View(parent, taskList);
 const firstComm = new Controller(firstView);
 firstComm.onInit();
-console.log(document.querySelector(".addItem"))
+
 
