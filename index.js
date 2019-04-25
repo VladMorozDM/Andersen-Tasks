@@ -2,34 +2,39 @@
  * Created by vlad on 23.04.2019.
  */
 let itemsToParse;
-// const localStorage = window.localStorage;
-// localStorage.clear();
+
 if(!localStorage.getItem("items")) {
     itemsToParse = [
 
         {
             date: '2019-03-03T03:24:00',
-            text: 'b',
+            text: 'sa',
             done: false,
             id: 2
         },
         {
             date: '2019-04-23T03:24:00',
-            text: 'c',
+            text: 'Should drink some tea',
             done: false,
             id: 3
         },
         {
             date: '2019-01-23T03:24:00',
-            text: 'a',
+            text: 'Work hard',
             done: true,
             id: 1
         },
         {
             date: '2019-02-23T03:24:00',
-            text: 'd',
+            text: 'Work not hard',
             done: true,
             id: 4
+        },
+        {
+            date: '2019-02-23T03:24:00',
+            text: 'Waghhhh',
+            done: true,
+            id: 5
         }
     ];
 } else{
